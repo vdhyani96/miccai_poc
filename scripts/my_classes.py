@@ -4,9 +4,10 @@ Created on Thu Apr 16 14:11:45 2020
 
 @author: DHYANI
 """
-
+from PIL import Image
 import torch
 from torch.utils import data
+import torchvision.transforms.functional as TF
 
 class Dataset(data.Dataset):
   'Characterizes a dataset for PyTorch'
@@ -24,9 +25,20 @@ class Dataset(data.Dataset):
         'Generates one sample of data'
         # Select sample
         ID = self.list_IDs[index]
-
-        # Load data and get label
-        X = torch.load('data/' + ID + '.pt')
+        
+        # Get the label
         y = self.labels[ID]
-
+        
+        # load the image
+        X = Image.open(ID)
+        width, height = X.size
+        if ID in self.mag20x:
+            # double the image size to 40x
+            X = X.resize((2*width, 2*height))
+        
+        # convert to tensor
+        X = TF.to_tensor(X)
+        
+        # now need to extract patches out of the loaded image
+        
         return X, y

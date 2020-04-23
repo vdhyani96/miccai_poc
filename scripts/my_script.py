@@ -6,6 +6,8 @@ Created on Thu Apr 16 14:14:48 2020
 """
 
 from glob import glob
+import random
+
 import torch
 from torch.utils import data
 
@@ -35,14 +37,19 @@ lung_train = glob('{}/segmentation_training/lung/training-set/*.png'.format(data
 classes = [gbm_train, hnsc_train, lgg_train, lung_train]
 
 # populate the dictionary partition and label
+# split 75-25% between train-validation
 for i in range(len(classes)):
     for img_path in classes[i]:
         img_name = img_path.split('/')[-1]
         img_id = img_name.split('.')[0]
         
         # if this is the image file we need
+        # 75-25 split using uniform distribution
         if img_id[-1].isdigit():
-            partition['train'].append(img_path)
+            if random.uniform(0,1) > 0.25:
+                partition['train'].append(img_path)
+            else:
+                partition['validation'].append(img_path)
             labels[img_path] = i
 
 

@@ -20,7 +20,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 #cudnn.benchmark = True
 
 # Parameters
-params = {'batch_size': 64,
+params = {'batch_size': 3,
           'shuffle': True,
           'num_workers': 6}
 max_epochs = 100
@@ -54,12 +54,18 @@ for i in range(len(classes)):
 
 
 # Check if the dictionaries were populated correctly
-print(partition)
-print("\nNow the labels:")
-print(labels)
+#print(partition)
+print("Train and validation data count: ")
+print(len(partition['train']))
+print(len(partition['validation']))
+print("\nNow the labels count:")
+print(len(labels))
+
+# Now I have the dictionaries ready, I can go ahead
+# and create the generators for training and validation set
 
 
-"""
+
 # Generators
 training_set = Dataset(partition['train'], labels)
 training_generator = data.DataLoader(training_set, **params)
@@ -67,6 +73,8 @@ training_generator = data.DataLoader(training_set, **params)
 validation_set = Dataset(partition['validation'], labels)
 validation_generator = data.DataLoader(validation_set, **params)
 
+
+"""
 # Loop over epochs
 for epoch in range(max_epochs):
     # Training

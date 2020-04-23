@@ -14,6 +14,7 @@ class Dataset(data.Dataset):
         'Initialization'
         self.labels = labels
         self.list_IDs = list_IDs
+        self.mag20x = ['/data02/shared/vikasd/scripts/poc/data/segmentation_training/lung/training-set/image01.png']
 
   def __len__(self):
         'Denotes the total number of samples'

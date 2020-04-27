@@ -23,7 +23,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 params = {'batch_size': 3,
           'shuffle': True,
           'num_workers': 6}
-max_epochs = 100
+max_epochs = 2
 
 
 # Datasets
@@ -74,17 +74,23 @@ validation_set = Dataset(partition['validation'], labels)
 validation_generator = data.DataLoader(validation_set, **params)
 
 
-"""
+
 # Loop over epochs
 for epoch in range(max_epochs):
     # Training
+    i = 0
     for local_batch, local_labels in training_generator:
         # Transfer to GPU
         local_batch, local_labels = local_batch.to(device), local_labels.to(device)
-
+        i += 1
+        print(i, "batch")
+        print("local_batch shape", local_batch.shape)
+        print("local_labels shape", local_labels.shape)
+        
         # Model computations
-        [...]
+        #[...]
 
+"""
     # Validation
     with torch.set_grad_enabled(False):
         for local_batch, local_labels in validation_generator:

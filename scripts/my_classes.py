@@ -23,7 +23,7 @@ class Dataset(data.Dataset):
 
   def __getitem__(self, index):
         'Generates one sample of data'
-        # Select sample
+        # Select sample, ID is basically the path of image
         ID = self.list_IDs[index]
         
         # Get the label
@@ -39,6 +39,16 @@ class Dataset(data.Dataset):
         # convert to tensor
         X = TF.to_tensor(X)
         
-        # now need to extract patches out of the loaded image
+        # now handle 4-channel images
+        if X.shape[0] == 4:
+            X = X[:3, :, :]
         
-        return X, y
+        
+        # now need to extract patches out of the loaded image
+        patch_size = 224
+        stride = 100
+        patches = X.unfold(1, patch_size, stride).unfold(2, patch_size, stride)
+        # ([3, 4, 4, 224, 224]) >> channel, patchcount_x, patchcount_y, patchsize_x, patchsize_y
+        print("Patches list dimension", patches.shape)
+        
+        return patches, y

@@ -86,5 +86,4 @@ class Dataset(data.Dataset):
         mask_patches = mask_patches.reshape(-1, 1, patch_size, patch_size)
         #print("Mask: After resize: Patches list dimension", mask_patches.shape)
         
-        
         return [patches, mask_patches], y
